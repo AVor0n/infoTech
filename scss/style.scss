@@ -1,0 +1,44 @@
+@import '_variables.scss';
+@import '_mixins.scss';
+
+.table__wrapper{
+  width: 50vw;
+}
+
+.table {
+  border: $table-border;
+  border-collapse: collapse;
+  table-layout: auto;
+  margin-bottom: 20px;
+}
+
+th,
+td {
+  border: $table-border;
+}
+
+.about-cell {
+  @include lines-limit(2);
+}
+
+
+.page-switcher{
+  display: flex;
+  justify-content: center;
+  &__indicator{
+    margin: 0 20px;
+  }
+  &__current-page-index{
+    width: 2ch;
+  }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
