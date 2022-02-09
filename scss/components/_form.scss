@@ -1,0 +1,8 @@
+@import "../_variables.scss";
+
+.form__field{
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  margin-bottom: 30px;
+}
