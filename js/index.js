@@ -1,3 +1,4 @@
+import * as sortDataTable from "./tableSort.js";
 import users from "../data/users.json" assert { type: "json" };
 
 const countRows = 10;
@@ -6,6 +7,7 @@ const countPages = Math.ceil(users.length / countRows);
 let selectedEntry;
 
 init();
+sortDataTable.init(users, () => goToPage(currentPage));
 goToPage(currentPage);
 
 function init() {
@@ -136,7 +138,7 @@ function hideEditor() {
 }
 
 function showEditor(entryIdx) {
-  const form = document.querySelector('.form')
+  const form = document.querySelector(".form");
   form.hidden = false;
 
   const user = users[entryIdx];

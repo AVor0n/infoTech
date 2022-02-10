@@ -45,3 +45,10 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+.sort--up:after {
+  content: '▲';
+}
+.sort--down:after {
+  content: '▼';
+}
