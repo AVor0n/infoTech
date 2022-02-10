@@ -148,7 +148,7 @@ function showEditor(entryIdx) {
 
   firstName.value = user.name.firstName;
   lastName.value = user.name.lastName;
-  about.textContent = user.about;
+  about.value = user.about;
   eyeColor.value = user.eyeColor;
 }
 
@@ -163,7 +163,7 @@ function updateField(event) {
       users[selectedEntry].name.lastName = input.value;
       break;
     case "about":
-      users[selectedEntry].about = input.textContent;
+      users[selectedEntry].about = input.value;
       break;
     case "eye-color":
       users[selectedEntry].eyeColor = input.value;
