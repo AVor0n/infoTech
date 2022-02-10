@@ -4,15 +4,16 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./styles/style.css" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="./styles/index.css" />
     <title>Test Task</title>
   </head>
   <body>
     <main class="main">
-      <div class="table__wrapper">
+      <div class="table__container">
         <table class="table">
           <thead class="table__head">
-            <tr class="table__head">
+            <tr class="table__head-row">
               <th class="table__head-cell">№</th>
               <th class="table__head-cell" data-sort-key="firstName">First name</th>
               <th class="table__head-cell" data-sort-key="lastName">Last name</th>
@@ -20,33 +21,44 @@
               <th class="table__head-cell" data-sort-key="eyeColor">Eye color</th>
             </tr>
           </thead>
+
           <tbody class="table__body"></tbody>
         </table>
+        <!-- table -->
+
         <div class="page-switcher">
           <button class="page-switcher__prev" disabled>Prev</button>
+
           <div class="page-switcher__indicator">
             <span>page</span>
             <input class="page-switcher__current-page-index" type="number" value="1" />
-            <span class="page-switcher__separator">of</span>
+            <span>of</span>
             <span class="page-switcher__max-page-index"></span>
           </div>
+
           <button class="page-switcher__next">Next</button>
         </div>
+        <!-- page-switcher-->
       </div>
-      <div class="form__wrapper">
+      <!-- table__container-->
+
+      <div class="form__container">
         <form class="form">
           <div class="form__field">
             <label for="first-name">First name</label>
             <input id="first-name" type="text" />
           </div>
+
           <div class="form__field">
             <label for="last-name">Last name</label>
             <input id="last-name" type="text" />
           </div>
+
           <div class="form__field">
             <label for="about">about</label>
             <textarea id="about" cols="30" rows="10"></textarea>
           </div>
+
           <div class="form__field">
             <label for="eye-color">Eye color</label>
             <input id="eye-color" type="text" list="eye-colors" />
@@ -57,8 +69,10 @@
               <option>blue</option>
             </datalist>
           </div>
+          <!-- form__field -->
         </form>
       </div>
+      <!-- form__container -->
     </main>
 
     <script src="./js/index.js" type="module"></script>

@@ -1,54 +1,52 @@
 @import "../_variables.scss";
 @import "../_mixins.scss";
 
+//содержит .table и .table-switcher
+.table__container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .table {
-  border: $table-border;
   border-collapse: collapse;
   table-layout: auto;
-  margin-bottom: 20px;
+
+  th,
+  td {
+    border: $table-border;
+  }
+
+  //отображение направления сортировки в шапке таблицы
+  .sort--up:after {
+    content: "▲";
+  }
+  .sort--down:after {
+    content: "▼";
+  }
+
+  .about-cell {
+    //ограничение количества отображаемых строк в поле about
+    @include lines-limit(2);
+  }
+
+  &__row:hover {
+    cursor: pointer;
+    background-color: $table-hover-color;
+  }
+
+  &__row.active {
+    background-color: $table-active-color;
+  }
 }
 
-th,
-td {
-  border: $table-border;
-}
-
-.about-cell {
-  @include lines-limit(2);
-}
-
-.table__row:hover {
-  cursor: pointer;
-  background-color: $table-hover-color;
-}
-
-.table__row.active {
-  background-color: $table-active-color;
-}
 .page-switcher {
   display: flex;
   justify-content: center;
-  &__indicator {
-    margin: 0 20px;
-  }
-  &__current-page-index {
+  gap: 20px;
+
+  // удаление стрелок у input[type="number"]
+  @include numberInputRemoveArrows() &__current-page-index {
     width: 2ch;
   }
-}
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-/* Firefox */
-input[type="number"] {
-  -moz-appearance: textfield;
-}
-
-.sort--up:after {
-  content: '▲';
-}
-.sort--down:after {
-  content: '▼';
 }
