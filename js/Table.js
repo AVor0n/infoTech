@@ -4,7 +4,7 @@ const TABLE_HEAD_ROW_CLASS = "table__head-row";
 const TABLE_HEAD_CELL_CLASS = "table__head-cell";
 const TABLE_BODY_CLASS = "table__body";
 const TABLE_ROW_CLASS = "table__row";
-const TABLE_ROW_CELL_CLASS = "table__row-cell";
+const TABLE_CELL_CLASS = "table__cell";
 
 export default class Table {
   /**
@@ -15,87 +15,89 @@ export default class Table {
    * @param {Array<string>} [cols] - массив c id видимых столбцов,
    * @param {number} [currentPage] - страница таблицы для отображения
    */
-  constructor({ colsData, rowsData, rowsPerPage, cols = colsData, currentPage = 1 }) {
+  constructor(colsData, rowsData, rowsPerPage, cols, currentPage = 1) {
     this.colsData = colsData;
     this.rowsData = rowsData;
-    this.cols = new Set(...cols);
+    this.cols = cols;
     this.currentPage = currentPage;
     this.countPages = Math.ceil(rowsData.length / rowsPerPage);
     this.rowsPerPage = rowsPerPage;
     this.selectedRow = null;
 
-    this.table = this.#createTable();
-  }
-
-  /**
-   * Задает отображаемые в таблице колонки
-   * @param {Array<string>} colNames
-   */
-  set cols(colNames) {
-    this.cols.clear();
-    colNames.forEach((colName) => {
-      if (colName in this.colsData) {
-        this.cols.add(colName);
-      } else {
-        throw new TypeError(`Column '${colName}' does not exist in colsData`);
-      }
-    });
-  }
-
-  /**
-   * Устанавливает отображаемую страницу таблицы
-   * @param {number} pageNumber
-   */
-  set currentPage(pageNumber) {
-    if (typeof countRows !== "number" || isNaN(countRows)) {
-      throw new TypeError("Expected number");
-    }
-
-    if (pageNumber < 1) this.currentPage = 1;
-    else if (pageNumber > this.countPages) this.currentPage = countPages;
-    else this.currentPage = pageNumber;
-  }
-
-  /**
-   * Задает количество строк на одной странице таблицы
-   * @param {number} countRows
-   */
-  set rowsPerPage(countRows) {
-    if (typeof countRows !== "number" || isNaN(countRows)) {
-      throw new TypeError("Expected number");
-    }
-
-    if (countRows < 1) this.rowsPerPage = 1;
-    else this.rowsPerPage = countRows;
-  }
-
-  #createHeadCell(key, textContent) {
-    const headCell = document.createElement("th");
-    headCell.classList.add(TABLE_HEAD_CELL_CLASS);
-    headCell.setAttribute("data-key", key);
-    headCell.textContent = textContent;
-    return headCell;
-  }
-
-  #createHeadRow(){
-    const headRow = document.createElement('tr');
-    this.cols.forEach(col =>{
-      headRow.append(this.#createHeadCell(col, this.colsData[cols]))
-    })
-    return headRow;
+    [this.table, this.thead, this.tbody] = this.#createTable();
+    this.#goToPage(currentPage);
   }
 
   #createTable() {
     const table = document.createElement("table");
+    const thead = document.createElement("thead");
+    const tbody = document.createElement("tbody");
 
-    table.innerHTML = `
-    <thead class="table__head">
-    </thead>
-    <tbody class="table__body">
-      ${this.#fillTable()}
-    </tbody>
-    `;
+    table.classList.add(TABLE_CLASS);
+    thead.classList.add(TABLE_HEAD_CLASS);
+    tbody.classList.add(TABLE_BODY_CLASS);
 
-    return table;
+    thead.append(this.#createHeadRow());
+
+    table.append(thead);
+    table.append(tbody);
+
+    return [table, thead, tbody];
+  }
+
+  #createHeadRow() {
+    const headRow = document.createElement("tr");
+
+    headRow.classList.add(TABLE_HEAD_ROW_CLASS);
+
+    this.cols.forEach((col) => {
+      const headCell = this.#createHeadCell(col, this.colsData[col]);
+      headRow.append(headCell);
+    });
+
+    return headRow;
+  }
+
+  #createHeadCell(key, textContent) {
+    const headCell = document.createElement("th");
+
+    headCell.classList.add(TABLE_HEAD_CELL_CLASS);
+    headCell.setAttribute("data-key", key);
+    headCell.textContent = textContent;
+
+    return headCell;
+  }
+
+  #goToPage(page) {
+    const startIdx = this.rowsPerPage * (page - 1);
+    const endIdx = startIdx + this.rowsPerPage;
+
+    this.tbody.innerHTML = "";
+
+    for (let i = startIdx; i < endIdx; i++) {
+      const rowData = this.rowsData[i];
+      this.tbody.append(this.#createRow(rowData));
+    }
+  }
+
+  #createRow(rowData) {
+    const row = document.createElement("tr");
+
+    row.classList.add(TABLE_ROW_CLASS);
+
+    this.cols.forEach((colName) => {
+      row.append(this.#createCell(rowData[colName]));
+    });
+
+    return row;
+  }
+
+  #createCell(textContent) {
+    const cell = document.createElement("td");
+
+    cell.classList.add(TABLE_CELL_CLASS);
+    cell.textContent = textContent;
+
+    return cell;
   }
 }
