@@ -1,3 +1,4 @@
+//ограничение количества строк в блоке
 @mixin lines-limit($count-lines) {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -10,6 +11,7 @@
   -webkit-line-clamp: $count-lines;
 }
 
+//удаление стрелок у input[type=number]
 @mixin numberInputRemoveArrows(){
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {

@@ -1,7 +1,6 @@
 @import "../_variables.scss";
 @import "../_mixins.scss";
 
-//содержит .table и .table-switcher
 .table__container {
   display: flex;
   flex-direction: column;
@@ -12,30 +11,21 @@
   border-collapse: collapse;
   table-layout: auto;
 
-  th,
-  td {
+  &__cell,
+  &__head-cell {
     border: $table-border;
   }
 
-  //отображение направления сортировки в шапке таблицы
-  .sort--asc:after {
-    content: "▲";
-  }
-  .sort--desc:after {
-    content: "▼";
-  }
-
-  .about-cell {
-    //ограничение количества отображаемых строк в поле about
-    @include lines-limit(2);
+  &__cell-about {
+    @include lines-limit(2); //ограничение количества отображаемых строк в поле about
   }
 
   &__row:hover {
-    cursor: pointer;
     background-color: $table-hover-color;
+    cursor: pointer;
   }
 
-  &__row.active {
+  &__row--selected {
     background-color: $table-active-color;
   }
 }
@@ -46,7 +36,9 @@
   gap: 20px;
 
   // удаление стрелок у input[type="number"]
-  @include numberInputRemoveArrows() &__current-page-index {
+  @include numberInputRemoveArrows();
+
+  &__current-page-index {
     width: 2ch;
   }
 }

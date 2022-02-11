@@ -10,6 +10,7 @@ const colsData = {
 };
 
 const rowsData = usersData.map((user) => ({
+  id: user.id,
   firstName: user.name.firstName,
   lastName: user.name.lastName,
   phone: user.phone,
