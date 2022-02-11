@@ -1,5 +1,9 @@
 import * as sortDataTable from "./tableSort.js";
-import users from "../data/users.json" assert { type: "json" };
+import usersData from "../data/users.json" assert { type: "json" };
+import UsersDataAdapter from "./UsersDataAdapter.js";
+
+
+const users = UsersDataAdapter.connect(usersData)
 
 const countRows = 10;
 let currentPage = 1;
@@ -82,8 +86,8 @@ function addRow(number, rowData) {
   row.classList.add("table__row");
 
   row.append(createTableCell(number));
-  row.append(createTableCell(rowData.name.firstName));
-  row.append(createTableCell(rowData.name.lastName));
+  row.append(createTableCell(rowData.firstName));
+  row.append(createTableCell(rowData.lastName));
   row.append(createTableCell(rowData.about, "about-cell"));
   row.append(createTableCell(rowData.eyeColor));
 

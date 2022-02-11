@@ -20,11 +20,11 @@
   border: 1px solid #000;
 }
 
-.table .sort--up:after {
+.table .sort--asc:after {
   content: "▲";
 }
 
-.table .sort--down:after {
+.table .sort--desc:after {
   content: "▼";
 }
 

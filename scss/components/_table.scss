@@ -18,10 +18,10 @@
   }
 
   //отображение направления сортировки в шапке таблицы
-  .sort--up:after {
+  .sort--asc:after {
     content: "▲";
   }
-  .sort--down:after {
+  .sort--desc:after {
     content: "▼";
   }
 
