@@ -28,6 +28,10 @@
   opacity: 1;
 }
 
+.table__cell-phone {
+  white-space: nowrap;
+}
+
 .table__cell-about {
   overflow: hidden;
   text-overflow: ellipsis;

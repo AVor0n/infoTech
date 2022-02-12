@@ -15,7 +15,7 @@
     padding: 5px;
     border: $table-border;
   }
-  &__head-cell{
+  &__head-cell {
     @extend .table__cell;
     white-space: nowrap;
   }
@@ -25,6 +25,10 @@
     .head-cell__menu-btn {
       opacity: 1;
     }
+  }
+
+  &__cell-phone {
+    white-space: nowrap;
   }
 
   &__cell-about {

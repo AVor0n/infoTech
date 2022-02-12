@@ -22,6 +22,12 @@ const TABLE_CELL_CLASS = "table__cell";
 const TABLE_CELL_CONTENT_CLASS = "table__cell-content";
 
 export default class Table {
+  #currentPage = 1;
+  #countPages;
+  #rowsPerPage;
+  #colsData;
+  #rowsData;
+  #visibleColumns;
   /**
    * Создает таблицу
    * @param {object} colsData - объект с заголовками столбцов таблицы, формата {id1: headText}
@@ -30,17 +36,74 @@ export default class Table {
    * @param {Array<string>} [cols] - массив c id видимых столбцов,
    * @param {number} [currentPage] - страница таблицы для отображения
    */
-  constructor(colsData, rowsData, rowsPerPage, cols, currentPage = 1) {
-    this.colsData = colsData;
-    this.rowsData = rowsData;
-    this.visibleColumns = cols;
-    this.currentPage = currentPage;
-    this.countPages = Math.ceil(rowsData.length / rowsPerPage);
-    this.rowsPerPage = rowsPerPage;
+  constructor(colsData, rowsData, rowsPerPage, cols) {
+    this.#colsData = colsData;
+    this.#rowsData = rowsData;
+    this.#visibleColumns = cols;
+    this.#countPages = Math.ceil(rowsData.length / rowsPerPage);
+    this.#rowsPerPage = rowsPerPage;
     this.sort = {};
 
     [this.table, this.thead, this.tbody] = this.#createTable();
-    this.goToPage(currentPage);
+    this.#updatePage();
+  }
+
+  get colsData() {
+    return this.#colsData;
+  }
+
+  get rowsData() {
+    return this.#rowsData;
+  }
+  get visibleColumns() {
+    return this.#visibleColumns;
+  }
+
+  set visibleColumns(colNames){
+    this.#visibleColumns = [];
+    colNames.forEach(colName => {
+      if(colName in this.colsData){
+        this.#visibleColumns.push(colName);
+      }else{
+        throw new TypeError(`Column ${colName} don't exist in table`)
+      }
+    })
+  }
+
+  get rowsPerPage() {
+    return this.#rowsPerPage;
+  }
+
+  set rowsPerPage(countRows) {
+    if (countRows < 1) {
+      this.#rowsPerPage = 1;
+    } else if (countRows > this.rowsData.length) {
+      this.#rowsPerPage = this.rowsData.length;
+    } else {
+      this.#rowsPerPage = countRows;
+    }
+
+    this.#updatePage();
+  }
+
+  get countPages() {
+    return this.#countPages;
+  }
+
+  get currentPage() {
+    return this.#currentPage;
+  }
+
+  set currentPage(pageNumber) {
+    if (pageNumber < 1) {
+      this.#currentPage = 1;
+    } else if (pageNumber > this.countPages) {
+      this.#currentPage = this.countPages;
+    } else {
+      this.#currentPage = pageNumber;
+    }
+
+    this.#goToPage(this.#currentPage);
   }
 
   #createTable() {
@@ -195,17 +258,12 @@ export default class Table {
   }
 
   #menuCheckboxHandler(event) {
-    const checkBoxes = this.menu.querySelectorAll(`.${TABLE_MENU_CHECKBOX_CLASS}`);
-    const visibleColumns = [];
+    const checkBoxes = [...this.menu.querySelectorAll(`.${TABLE_MENU_CHECKBOX_CLASS}`)];
+    const checkedCheckBoxes = checkBoxes.filter(checkBox => checkBox.checked);
+    const visibleColumns = checkedCheckBoxes.map(checkBox => checkBox.dataset.columnId);
 
-    checkBoxes.forEach((checkBox) => {
-      if (checkBox.checked) {
-        visibleColumns.push(checkBox.dataset.columnId);
-      }
-    });
-
-    if(visibleColumns.length === 0) {
-      alert('Нельзя оставлять таблицу пустой')
+    if (visibleColumns.length === 0) {
+      alert("Нельзя оставлять таблицу пустой");
       event.target.checked = true;
       return;
     }
@@ -236,6 +294,8 @@ export default class Table {
       rowData[key] = value;
     }
 
+    rowData.id = row.dataset.id;
+
     return rowData;
   }
 
@@ -256,6 +316,7 @@ export default class Table {
   #createRow(rowData) {
     const row = document.createElement("tr");
     row.classList.add(TABLE_ROW_CLASS);
+    row.dataset.id = rowData.id;
 
     row.addEventListener("click", (e) => this.rowClickHandler(e, row, this));
 
@@ -285,7 +346,7 @@ export default class Table {
     return cell;
   }
 
-  goToPage(page) {
+  #goToPage(page) {
     const startIdx = this.rowsPerPage * (page - 1);
     const endIdx = startIdx + this.rowsPerPage;
 
@@ -298,7 +359,7 @@ export default class Table {
   }
 
   #updatePage() {
-    this.goToPage(this.currentPage);
+    this.#goToPage(this.currentPage);
   }
 
   #rebuildTable() {
@@ -306,6 +367,15 @@ export default class Table {
     const newHeadRow = this.#createHeadRow();
 
     this.thead.replaceChild(newHeadRow, oldHeadRow);
+
+    this.#updatePage();
+  }
+
+  changeRowData(newRowData) {
+    const id = newRowData.id;
+    const index = this.rowsData.findIndex((row) => row.id === id);
+
+    this.rowsData[index] = newRowData;
 
     this.#updatePage();
   }
