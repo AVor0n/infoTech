@@ -4,6 +4,11 @@ const TABLE_HEAD_CLASS = "table__head";
 const TABLE_HEAD_ROW_CLASS = "table__head-row";
 const TABLE_HEAD_CELL_CLASS = "table__head-cell";
 
+const TABLE_MENU_CLASS = "table__menu";
+const TABLE_MENU_ITEM_CLASS = "table__menu-item";
+const TABLE_MENU_CHECKBOX_CLASS = "table__menu-checkbox";
+const TABLE_MENU_LABEL_CLASS = "table__menu-label";
+
 const HEAD_CELL_MENU_BTN_CLASS = "head-cell__menu-btn";
 const HEAD_CELL_SORT_BTN_CLASS = "head-cell__sort-btn";
 const HEAD_CELL_SORT_DESC_BTN_CLASS = "head-cell__sort-btn--desc";
@@ -28,16 +33,12 @@ export default class Table {
   constructor(colsData, rowsData, rowsPerPage, cols, currentPage = 1) {
     this.colsData = colsData;
     this.rowsData = rowsData;
-    this.cols = cols;
+    this.visibleColumns = cols;
     this.currentPage = currentPage;
     this.countPages = Math.ceil(rowsData.length / rowsPerPage);
     this.rowsPerPage = rowsPerPage;
-    this.selectedRow = null;
-    this.onRowClick = null;
-    this.sort = {
-      order: null,
-      orderBy: null,
-    };
+    this.sort = {};
+
     [this.table, this.thead, this.tbody] = this.#createTable();
     this.goToPage(currentPage);
   }
@@ -56,6 +57,9 @@ export default class Table {
     table.append(thead);
     table.append(tbody);
 
+    this.menu = this.#createMenu();
+    document.body.append(this.menu);
+
     return [table, thead, tbody];
   }
 
@@ -64,7 +68,7 @@ export default class Table {
 
     headRow.classList.add(TABLE_HEAD_ROW_CLASS);
 
-    this.cols.forEach((col) => {
+    this.visibleColumns.forEach((col) => {
       const textContent = this.colsData[col];
       const className = `table__head-cell-${col}`;
 
@@ -83,8 +87,9 @@ export default class Table {
     headCell.textContent = textContent;
 
     const sortBtn = this.#createSortBtn(col);
-    // this.#sortBtnSetAppearance(headCell, sortBtn)
+    const menuBtn = this.#createMenuBtn();
     headCell.prepend(sortBtn);
+    headCell.append(menuBtn);
 
     return headCell;
   }
@@ -138,12 +143,94 @@ export default class Table {
     }
   }
 
+  #createMenuBtn() {
+    const menuBtn = document.createElement("button");
+
+    menuBtn.classList.add(HEAD_CELL_MENU_BTN_CLASS);
+    menuBtn.addEventListener("click", (e) => {
+      this.#showMenu(e);
+    });
+
+    return menuBtn;
+  }
+
+  #createMenu() {
+    const menu = document.createElement("div");
+
+    menu.classList.add(TABLE_MENU_CLASS);
+    menu.style.position = "absolute";
+    menu.hidden = true;
+
+    menu.addEventListener("mouseleave", () => {
+      menu.hidden = true;
+    });
+
+    const columnIds = Object.keys(this.colsData);
+    for (const columnId of columnIds) {
+      menu.append(this.#createMenuItem(columnId));
+    }
+
+    return menu;
+  }
+
+  #createMenuItem(columnId) {
+    const menuItem = document.createElement("div");
+    menuItem.classList.add(TABLE_MENU_ITEM_CLASS);
+
+    const checkBox = document.createElement("input");
+    checkBox.classList.add(TABLE_MENU_CHECKBOX_CLASS);
+    checkBox.type = "checkbox";
+    checkBox.dataset.columnId = columnId;
+    checkBox.checked = this.visibleColumns.includes(columnId);
+    checkBox.addEventListener("change", (e) => this.#menuCheckboxHandler(e));
+
+    const label = document.createElement("label");
+    label.classList.add(TABLE_MENU_LABEL_CLASS);
+    label.textContent = this.colsData[columnId];
+
+    label.prepend(checkBox);
+    menuItem.append(label);
+
+    return menuItem;
+  }
+
+  #menuCheckboxHandler(event) {
+    const checkBoxes = this.menu.querySelectorAll(`.${TABLE_MENU_CHECKBOX_CLASS}`);
+    const visibleColumns = [];
+
+    checkBoxes.forEach((checkBox) => {
+      if (checkBox.checked) {
+        visibleColumns.push(checkBox.dataset.columnId);
+      }
+    });
+
+    if(visibleColumns.length === 0) {
+      alert('Нельзя оставлять таблицу пустой')
+      event.target.checked = true;
+      return;
+    }
+
+    this.visibleColumns = visibleColumns;
+    this.#rebuildTable();
+  }
+
+  #showMenu(clickEvent) {
+    const { pageX, pageY } = clickEvent;
+
+    //смещение в 5px сделано, чтобы menu оказалось в состоянии mouseover,
+    //так его исчезновение привязано к mouseleave
+    this.menu.style.left = pageX - 5 + "px";
+    this.menu.style.top = pageY - 5 + "px";
+
+    this.menu.hidden = false;
+  }
+
   getDataFromRow(row) {
     const rowData = {};
     const cells = row.querySelectorAll(`.${TABLE_CELL_CONTENT_CLASS}`);
 
     for (let i = 0; i < cells.length; i++) {
-      const key = this.cols[i];
+      const key = this.visibleColumns[i];
       const value = cells[i].textContent;
 
       rowData[key] = value;
@@ -172,7 +259,7 @@ export default class Table {
 
     row.addEventListener("click", (e) => this.rowClickHandler(e, row, this));
 
-    this.cols.forEach((colName) => {
+    this.visibleColumns.forEach((colName) => {
       const textContent = rowData[colName];
       const className = `table__cell-${colName}`;
 
@@ -212,5 +299,14 @@ export default class Table {
 
   #updatePage() {
     this.goToPage(this.currentPage);
+  }
+
+  #rebuildTable() {
+    const oldHeadRow = this.thead.querySelector(`.${TABLE_HEAD_ROW_CLASS}`);
+    const newHeadRow = this.#createHeadRow();
+
+    this.thead.replaceChild(newHeadRow, oldHeadRow);
+
+    this.#updatePage();
   }
 }

@@ -19,7 +19,12 @@
   border: 1px solid #000;
 }
 
-.table__head-cell:hover .head-cell__sort-btn {
+.table__head-cell {
+  white-space: nowrap;
+}
+
+.table__head-cell:hover .head-cell__sort-btn,
+.table__head-cell:hover .head-cell__menu-btn {
   opacity: 1;
 }
 
@@ -39,11 +44,11 @@
   cursor: pointer;
 }
 
-.table__row--selected {
+.table__row--selected, .table__row--selected:hover {
   background-color: #c1f6ff;
 }
 
-.table .head-cell__sort-btn {
+.table .head-cell__btn, .table .head-cell__sort-btn, .table .head-cell__menu-btn {
   width: 15px;
   height: 15px;
   border: 1px solid gray;
@@ -53,7 +58,7 @@
   transition: all 0.3s;
 }
 
-.table .head-cell__sort-btn--asc {
+.table .head-cell__sort-btn--asc, .table .head-cell__sort-btn--desc {
   background: url("../../assets/arrow-up.png");
   background-repeat: no-repeat;
   background-position: center;
@@ -62,13 +67,22 @@
 }
 
 .table .head-cell__sort-btn--desc {
-  background: url("../../assets/arrow-up.png");
+  -webkit-transform: rotate(-180deg);
+          transform: rotate(-180deg);
+}
+
+.table .head-cell__menu-btn {
+  background: url("../../assets/menu.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-  opacity: 1;
-  -webkit-transform: rotate(-180deg);
-          transform: rotate(-180deg);
+}
+
+.table__menu {
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid gray;
 }
 
 .page-switcher {
