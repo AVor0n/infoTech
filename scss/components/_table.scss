@@ -13,7 +13,14 @@
 
   &__cell,
   &__head-cell {
+    padding: 5px;
     border: $table-border;
+  }
+
+  &__head-cell:hover{
+    .head-cell__sort-btn{
+      opacity: 1
+    }
   }
 
   &__cell-about {
@@ -27,6 +34,32 @@
 
   &__row--selected {
     background-color: $table-active-color;
+  }
+
+  .head-cell__sort-btn {
+    width: 15px;
+    height: 15px;
+    border: 1px solid gray;
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 0.3s;
+
+    &--asc {
+      background: url("../../assets/arrow-up.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      opacity: 1;
+    }
+
+    &--desc {
+      background: url("../../assets/arrow-up.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      opacity: 1;
+      transform: rotate(-180deg);
+    }
   }
 }
 

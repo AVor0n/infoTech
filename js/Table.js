@@ -1,10 +1,18 @@
 const TABLE_CLASS = "table";
+
 const TABLE_HEAD_CLASS = "table__head";
 const TABLE_HEAD_ROW_CLASS = "table__head-row";
 const TABLE_HEAD_CELL_CLASS = "table__head-cell";
+
+const HEAD_CELL_MENU_BTN_CLASS = "head-cell__menu-btn";
+const HEAD_CELL_SORT_BTN_CLASS = "head-cell__sort-btn";
+const HEAD_CELL_SORT_DESC_BTN_CLASS = "head-cell__sort-btn--desc";
+const HEAD_CELL_SORT_ASC_BTN_CLASS = "head-cell__sort-btn--asc";
+
 const TABLE_BODY_CLASS = "table__body";
 const TABLE_ROW_CLASS = "table__row";
 const TABLE_ROW_SELECTED_CLASS = "table__row--selected";
+
 const TABLE_CELL_CLASS = "table__cell";
 const TABLE_CELL_CONTENT_CLASS = "table__cell-content";
 
@@ -26,6 +34,10 @@ export default class Table {
     this.rowsPerPage = rowsPerPage;
     this.selectedRow = null;
     this.onRowClick = null;
+    this.sort = {
+      order: null,
+      orderBy: null,
+    };
     [this.table, this.thead, this.tbody] = this.#createTable();
     this.goToPage(currentPage);
   }
@@ -56,28 +68,81 @@ export default class Table {
       const textContent = this.colsData[col];
       const className = `table__head-cell-${col}`;
 
-      const headCell = this.#createHeadCell(textContent, className);
+      const headCell = this.#createHeadCell(textContent, className, col);
       headRow.append(headCell);
     });
 
     return headRow;
   }
 
-  #createHeadCell(textContent, className) {
+  #createHeadCell(textContent, className, col) {
     const headCell = document.createElement("th");
 
     headCell.classList.add(TABLE_HEAD_CELL_CLASS);
     headCell.classList.add(className);
     headCell.textContent = textContent;
 
+    const sortBtn = this.#createSortBtn(col);
+    // this.#sortBtnSetAppearance(headCell, sortBtn)
+    headCell.prepend(sortBtn);
+
     return headCell;
   }
 
-  getDataFromRow(row){
+  #createSortBtn(orderBy) {
+    const sortBtn = document.createElement("button");
+
+    sortBtn.classList.add(HEAD_CELL_SORT_BTN_CLASS);
+
+    sortBtn.addEventListener("click", (e) => {
+      let order = "asc"; //направление сортировки по-умолчанию
+
+      //если к данному столбцу уже применена сортировка, то меняем направление
+      if (this.sort.orderBy === orderBy) {
+        order = this.sort.order === "asc" ? "desc" : "asc";
+      }
+
+      this.sort.order = order;
+      this.sort.orderBy = orderBy;
+
+      this.#sortBtnToggleClasses(sortBtn, this);
+      this.#tableSort(order, orderBy, this);
+      this.#updatePage();
+    });
+
+    return sortBtn;
+  }
+
+  #tableSort(order, orderBy, table) {
+    const collator = new Intl.Collator("en");
+    const comparator =
+      order === "asc"
+        ? (a, b) => collator.compare(a[orderBy], b[orderBy])
+        : (a, b) => -collator.compare(a[orderBy], b[orderBy]);
+
+    table.rowsData.sort(comparator);
+  }
+
+  #sortBtnToggleClasses(sortBtn, table) {
+    const sortBtns = table.table.querySelectorAll(`.${HEAD_CELL_SORT_BTN_CLASS}`);
+
+    sortBtns.forEach((btn) => {
+      btn.classList.remove(HEAD_CELL_SORT_DESC_BTN_CLASS);
+      btn.classList.remove(HEAD_CELL_SORT_ASC_BTN_CLASS);
+    });
+
+    if (table.sort.order === "desc") {
+      sortBtn.classList.add(HEAD_CELL_SORT_DESC_BTN_CLASS);
+    } else {
+      sortBtn.classList.add(HEAD_CELL_SORT_ASC_BTN_CLASS);
+    }
+  }
+
+  getDataFromRow(row) {
     const rowData = {};
     const cells = row.querySelectorAll(`.${TABLE_CELL_CONTENT_CLASS}`);
 
-    for(let i = 0; i < cells.length; i++){
+    for (let i = 0; i < cells.length; i++) {
       const key = this.cols[i];
       const value = cells[i].textContent;
 
@@ -86,6 +151,7 @@ export default class Table {
 
     return rowData;
   }
+
   rowClickHandler(event, row, table) {
     const rows = table.tbody.children;
 
@@ -142,5 +208,9 @@ export default class Table {
       const rowData = this.rowsData[i];
       this.tbody.append(this.#createRow(rowData));
     }
+  }
+
+  #updatePage() {
+    this.goToPage(this.currentPage);
   }
 }

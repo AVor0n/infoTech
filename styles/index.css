@@ -15,7 +15,12 @@
 }
 
 .table__cell, .table__head-cell {
+  padding: 5px;
   border: 1px solid #000;
+}
+
+.table__head-cell:hover .head-cell__sort-btn {
+  opacity: 1;
 }
 
 .table__cell-about {
@@ -36,6 +41,34 @@
 
 .table__row--selected {
   background-color: #c1f6ff;
+}
+
+.table .head-cell__sort-btn {
+  width: 15px;
+  height: 15px;
+  border: 1px solid gray;
+  border-radius: 50%;
+  opacity: 0;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.table .head-cell__sort-btn--asc {
+  background: url("../../assets/arrow-up.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 1;
+}
+
+.table .head-cell__sort-btn--desc {
+  background: url("../../assets/arrow-up.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 1;
+  -webkit-transform: rotate(-180deg);
+          transform: rotate(-180deg);
 }
 
 .page-switcher {
