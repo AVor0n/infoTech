@@ -1,0 +1,12 @@
+.page-switcher {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+
+  // удаление стрелок у input[type="number"]
+  @include numberInputRemoveArrows();
+
+  &__current-page {
+    width: 2ch;
+  }
+}

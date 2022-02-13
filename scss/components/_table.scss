@@ -86,16 +86,3 @@
     border: 1px solid gray;
   }
 }
-
-.page-switcher {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-
-  // удаление стрелок у input[type="number"]
-  @include numberInputRemoveArrows();
-
-  &__current-page-index {
-    width: 2ch;
-  }
-}

@@ -1,5 +1,7 @@
-import table from './initTable.js';
 import formController from './initForm.js';
+import table from './initTable.js';
+import './paginator.js';
+
 
 const tableContainer = document.querySelector(".table__container");
 tableContainer.prepend(table.table);
