@@ -10,13 +10,20 @@
 .table {
   border-collapse: collapse;
   table-layout: auto;
+  overflow: hidden;
+  border-radius: $panel-border-radius;
+  box-shadow: $panel-shadow;
+  background-color: $panel-bg-color;
 
   &__cell {
-    padding: 5px;
-    border: $table-border;
+    padding: 5px 20px;
+    border-bottom: $table-row-border;
   }
+
   &__head-cell {
     @extend .table__cell;
+    padding: 5px;
+    font-weight: bold;
     white-space: nowrap;
   }
 
@@ -42,27 +49,27 @@
 
   &__row--selected,
   &__row--selected:hover {
-    background-color: $table-active-color;
+    background-color: $accent-color;
   }
 
   .head-cell__btn {
     width: 15px;
     height: 15px;
-    border: 1px solid gray;
-    border-radius: 50%;
     opacity: 0;
+    margin: 0 5px;
+    padding: 0;
+    border: none;
+    cursor: pointer;
     transition: all 0.3s;
   }
 
   .head-cell__sort-btn {
     @extend .head-cell__btn;
+    @include svg-icon("../../assets/arrow-up.svg", 15px, $btn-color);
 
     &--asc,
     &--desc {
-      background: url("../../assets/arrow-up.png");
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: contain;
+      background-color: $btn-active-color;
       opacity: 1;
     }
 
@@ -73,16 +80,15 @@
 
   .head-cell__menu-btn {
     @extend .head-cell__btn;
-    background: url("../../assets/menu.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
+    @include svg-icon("../../assets/menu.svg", 15px, $btn-color);
+    transform: rotate(90deg);
   }
 
   &__menu {
-    background-color: #fff;
+    background-color: $panel-bg-color;
     padding: 10px;
-    border-radius: 10px;
-    border: 1px solid gray;
+    border-radius: $panel-border-radius;
+    border: $panel-border;
+    box-shadow: $panel-shadow;
   }
 }

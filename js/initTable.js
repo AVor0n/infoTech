@@ -20,7 +20,7 @@ const rowsData = usersData.map((user) => ({
 
 const visibleCols = ["firstName", "lastName", "about", "eyeColor"];
 
-const rowsPerPage = 10;
+const rowsPerPage = 5;
 
 const table = new Table(colsData, rowsData, rowsPerPage, visibleCols);
 

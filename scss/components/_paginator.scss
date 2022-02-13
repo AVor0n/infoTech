@@ -2,11 +2,37 @@
   display: flex;
   justify-content: center;
   gap: 20px;
-
   // удаление стрелок у input[type="number"]
   @include numberInputRemoveArrows();
 
   &__current-page {
     width: 2ch;
+  }
+
+  .btn {
+    padding: 0;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      background: $btn-active-color;
+    }
+  }
+
+  &__next,
+  &__prev {
+    @extend .btn;
+    @include svg-icon("../../assets/arrow-next.svg", 20px, $btn-color);
+  }
+
+  &__start,
+  &__end {
+    @extend .btn;
+    @include svg-icon("../../assets/arrow-end.svg", 20px, $btn-color);
+  }
+
+  &__start,
+  &__prev {
+    transform: rotate(-180deg);
   }
 }
