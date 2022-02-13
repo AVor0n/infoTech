@@ -12,7 +12,7 @@
 }
 
 //удаление стрелок у input[type=number]
-@mixin numberInputRemoveArrows(){
+@mixin numberInputRemoveArrows() {
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -24,8 +24,8 @@
   }
 }
 
-//цветное svg-изображение
-@mixin svg-icon($path, $size, $color ) {
+//svg иконка заданного цвета и размера
+@mixin svg-icon($path, $size, $color) {
   height: $size;
   width: $size;
   background-color: $color;

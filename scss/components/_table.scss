@@ -10,7 +10,9 @@
 .table {
   border-collapse: collapse;
   table-layout: auto;
-  overflow: hidden;
+  overflow-x: auto;
+  display: block;
+  max-width: 50vw;
   border-radius: $panel-border-radius;
   box-shadow: $panel-shadow;
   background-color: $panel-bg-color;
@@ -56,11 +58,12 @@
     width: 15px;
     height: 15px;
     opacity: 0;
-    margin: 0 5px;
+    margin: auto 5px;
     padding: 0;
     border: none;
     cursor: pointer;
     transition: all 0.3s;
+    vertical-align: middle;
   }
 
   .head-cell__sort-btn {
@@ -90,5 +93,20 @@
     border-radius: $panel-border-radius;
     border: $panel-border;
     box-shadow: $panel-shadow;
+  }
+}
+
+.table {
+  scrollbar-color: $table-hover-color $panel-bg-color;
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background-color: $panel-bg-color;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: $table-hover-color;
+    border-radius: 6px;
   }
 }
