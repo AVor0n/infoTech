@@ -1,4 +1,5 @@
-import usersData from "../data/users.json" assert {type: 'json'};
+// import usersData from "../data/users.json" assert {type: 'json'};
+import usersData from "../data/users.js";
 import Table from "./Table.js";
 
 const colsData = {
