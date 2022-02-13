@@ -59,15 +59,15 @@ export default class Table {
     return this.#visibleColumns;
   }
 
-  set visibleColumns(colNames){
+  set visibleColumns(colNames) {
     this.#visibleColumns = [];
-    colNames.forEach(colName => {
-      if(colName in this.colsData){
+    colNames.forEach((colName) => {
+      if (colName in this.colsData) {
         this.#visibleColumns.push(colName);
-      }else{
-        throw new TypeError(`Column ${colName} don't exist in table`)
+      } else {
+        throw new TypeError(`Column ${colName} don't exist in table`);
       }
-    })
+    });
   }
 
   get rowsPerPage() {
@@ -259,8 +259,8 @@ export default class Table {
 
   #menuCheckboxHandler(event) {
     const checkBoxes = [...this.menu.querySelectorAll(`.${TABLE_MENU_CHECKBOX_CLASS}`)];
-    const checkedCheckBoxes = checkBoxes.filter(checkBox => checkBox.checked);
-    const visibleColumns = checkedCheckBoxes.map(checkBox => checkBox.dataset.columnId);
+    const checkedCheckBoxes = checkBoxes.filter((checkBox) => checkBox.checked);
+    const visibleColumns = checkedCheckBoxes.map((checkBox) => checkBox.dataset.columnId);
 
     if (visibleColumns.length === 0) {
       alert("Нельзя оставлять таблицу пустой");
@@ -299,7 +299,7 @@ export default class Table {
     return rowData;
   }
 
-  rowClickHandler(event, row, table) {
+  #rowClickHandler(event, row, table) {
     const rows = table.tbody.children;
 
     for (const r of rows) {
@@ -310,7 +310,16 @@ export default class Table {
     table.selectedRow = row;
     table.selectedRowData = this.getDataFromRow(row);
 
-    if (this.onRowClick) this.onRowClick(event);
+    if (this.onRowClick && typeof this.onRowClick === "function") {
+      this.onRowClick(event);
+    }
+  }
+
+  /**
+   * Функция-обработчик, вызываемая при клике по строке таблицы
+   * @param {MouseEvent} e
+   */
+  onRowClick(e) {
   }
 
   #createRow(rowData) {
@@ -318,7 +327,7 @@ export default class Table {
     row.classList.add(TABLE_ROW_CLASS);
     row.dataset.id = rowData.id;
 
-    row.addEventListener("click", (e) => this.rowClickHandler(e, row, this));
+    row.addEventListener("click", (e) => this.#rowClickHandler(e, row, this));
 
     this.visibleColumns.forEach((colName) => {
       const textContent = rowData[colName];

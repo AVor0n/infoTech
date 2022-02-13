@@ -1,22 +1,16 @@
 import table from './initTable.js';
+import formController from './initForm.js';
 
 const tableContainer = document.querySelector(".table__container");
 tableContainer.prepend(table.table);
 
-table.onRowClick = function (e){
-  const row = table.getDataFromRow(table.selectedRow)
-
-  row.firstName = '123';
-  table.changeRowData(row);
+table.onRowClick = () => {
+  formController.visibleFields = table.visibleColumns;
+  formController.data = table.getDataFromRow(table.selectedRow)
 }
 
-const nextBtn = document.querySelector(".page-switcher__next");
-const prevBtn = document.querySelector(".page-switcher__prev");
-
-nextBtn.addEventListener('click', () => {
-  table.rowsPerPage += 1;
-})
-
-prevBtn.addEventListener("click", () => {
-  table.rowsPerPage -= 1;
-});
+formController.onChangeForm = (_, formData) => {
+  const rowData = table.getDataFromRow(table.selectedRow);
+  const newRowData = {...rowData, ...formData};
+  table.changeRowData(newRowData)
+}

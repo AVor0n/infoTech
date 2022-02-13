@@ -29,22 +29,27 @@
 
       <div class="form__container">
         <form class="form">
-          <div class="form__field">
+          <div class="form__field" data-field-id="firstName">
             <label for="first-name">First name</label>
             <input id="first-name" type="text" />
           </div>
 
-          <div class="form__field">
+          <div class="form__field" data-field-id="lastName">
             <label for="last-name">Last name</label>
             <input id="last-name" type="text" />
           </div>
 
-          <div class="form__field">
+          <div class="form__field" data-field-id="phone">
+            <label for="phone">phone</label>
+            <input id="phone" type="tel" />
+          </div>
+
+          <div class="form__field" data-field-id="about">
             <label for="about">about</label>
             <textarea id="about" cols="30" rows="10"></textarea>
           </div>
 
-          <div class="form__field">
+          <div class="form__field" data-field-id="eyeColor">
             <label for="eye-color">Eye color</label>
             <input id="eye-color" type="text" list="eye-colors" />
             <datalist id="eye-colors">
