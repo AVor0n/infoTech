@@ -28,6 +28,7 @@ export default class Table {
   #colsData;
   #rowsData;
   #visibleColumns;
+  #selectedRow;
   /**
    * Создает таблицу
    * @param {object} colsData - объект с заголовками столбцов таблицы, формата {id1: headText}
@@ -46,6 +47,10 @@ export default class Table {
 
     [this.table, this.thead, this.tbody] = this.#createTable();
     this.#updatePage();
+  }
+
+  get selectedRow() {
+    return this.#selectedRow;
   }
 
   get colsData() {
@@ -68,6 +73,8 @@ export default class Table {
         throw new TypeError(`Column ${colName} don't exist in table`);
       }
     });
+
+    this.#rebuildTable();
   }
 
   get rowsPerPage() {
@@ -269,7 +276,6 @@ export default class Table {
     }
 
     this.visibleColumns = visibleColumns;
-    this.#rebuildTable();
   }
 
   #showMenu(clickEvent) {
@@ -306,26 +312,28 @@ export default class Table {
       r.classList.remove(TABLE_ROW_SELECTED_CLASS);
     }
 
-    row.classList.add(TABLE_ROW_SELECTED_CLASS);
-    table.selectedRow = row;
-    table.selectedRowData = this.getDataFromRow(row);
-
-    if (this.onRowClick && typeof this.onRowClick === "function") {
-      this.onRowClick(event);
-    }
+    this.#setSelectedRow(row);
   }
 
   /**
    * Функция-обработчик, вызываемая при клике по строке таблицы
-   * @param {MouseEvent} e
+   * @param {HTMLTableRowElement} _selectedRow - выделенная строка
    */
-  onRowClick(e) {
+  onChangeSelectedRow(_selectedRow) {}
+
+  #setSelectedRow(row) {
+    this.#selectedRow = row;
+    row.classList.add(TABLE_ROW_SELECTED_CLASS);
+
+    if (this.onChangeSelectedRow && typeof this.onChangeSelectedRow === "function") {
+      this.onChangeSelectedRow(this.#selectedRow);
+    }
   }
 
   #createRow(rowData) {
     const row = document.createElement("tr");
-    row.classList.add(TABLE_ROW_CLASS);
     row.dataset.id = rowData.id;
+    row.classList.add(TABLE_ROW_CLASS);
 
     row.addEventListener("click", (e) => this.#rowClickHandler(e, row, this));
 
@@ -335,6 +343,10 @@ export default class Table {
 
       row.append(this.#createCell(textContent, className));
     });
+
+    if (this.selectedRow && this.selectedRow.dataset.id === rowData.id) {
+      this.#setSelectedRow(row);
+    }
 
     return row;
   }
@@ -384,7 +396,7 @@ export default class Table {
     const id = newRowData.id;
     const index = this.rowsData.findIndex((row) => row.id === id);
 
-    this.rowsData[index] = {...this.rowsData[index], ...newRowData};
+    this.rowsData[index] = { ...this.rowsData[index], ...newRowData };
 
     this.#updatePage();
   }

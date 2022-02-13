@@ -6,10 +6,10 @@ import './paginator.js';
 const tableContainer = document.querySelector(".table__container");
 tableContainer.prepend(table.table);
 
-table.onRowClick = () => {
+table.onChangeSelectedRow = () => {
   formController.visibleFields = table.visibleColumns;
-  formController.data = table.getDataFromRow(table.selectedRow)
-}
+  formController.data = table.getDataFromRow(table.selectedRow);
+};
 
 formController.onChangeForm = (_, formData) => {
   const rowData = table.getDataFromRow(table.selectedRow);
