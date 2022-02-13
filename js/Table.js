@@ -384,7 +384,7 @@ export default class Table {
     const id = newRowData.id;
     const index = this.rowsData.findIndex((row) => row.id === id);
 
-    this.rowsData[index] = newRowData;
+    this.rowsData[index] = {...this.rowsData[index], ...newRowData};
 
     this.#updatePage();
   }
