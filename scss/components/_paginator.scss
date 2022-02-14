@@ -22,13 +22,13 @@
   &__next,
   &__prev {
     @extend .btn;
-    @include svg-icon("../../assets/arrow-next.svg", 20px, $btn-color);
+    @include svg-icon("../assets/arrow-next.svg", 20px, $btn-color);
   }
 
   &__start,
   &__end {
     @extend .btn;
-    @include svg-icon("../../assets/arrow-end.svg", 20px, $btn-color);
+    @include svg-icon("../assets/arrow-end.svg", 20px, $btn-color);
   }
 
   &__start,

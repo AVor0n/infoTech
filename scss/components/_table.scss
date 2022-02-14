@@ -68,7 +68,7 @@
 
   .head-cell__sort-btn {
     @extend .head-cell__btn;
-    @include svg-icon("../../assets/arrow-up.svg", 15px, $btn-color);
+    @include svg-icon("../assets/arrow-up.svg", 15px, $btn-color);
 
     &--asc,
     &--desc {
@@ -83,7 +83,7 @@
 
   .head-cell__menu-btn {
     @extend .head-cell__btn;
-    @include svg-icon("../../assets/menu.svg", 15px, $btn-color);
+    @include svg-icon("../assets/menu.svg", 15px, $btn-color);
     transform: rotate(90deg);
   }
 

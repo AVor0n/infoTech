@@ -78,8 +78,8 @@
   height: 15px;
   width: 15px;
   background-color: #bebebe;
-  -webkit-mask-image: url("../../assets/arrow-up.svg");
-          mask-image: url("../../assets/arrow-up.svg");
+  -webkit-mask-image: url("../assets/arrow-up.svg");
+          mask-image: url("../assets/arrow-up.svg");
   background-size: cover;
   -webkit-mask-size: contain;
   mask-size: contain;
@@ -103,8 +103,8 @@
   height: 15px;
   width: 15px;
   background-color: #bebebe;
-  -webkit-mask-image: url("../../assets/menu.svg");
-          mask-image: url("../../assets/menu.svg");
+  -webkit-mask-image: url("../assets/menu.svg");
+          mask-image: url("../assets/menu.svg");
   background-size: cover;
   -webkit-mask-size: contain;
   mask-size: contain;
@@ -179,8 +179,8 @@
   height: 20px;
   width: 20px;
   background-color: #bebebe;
-  -webkit-mask-image: url("../../assets/arrow-next.svg");
-          mask-image: url("../../assets/arrow-next.svg");
+  -webkit-mask-image: url("../assets/arrow-next.svg");
+          mask-image: url("../assets/arrow-next.svg");
   background-size: cover;
   -webkit-mask-size: contain;
   mask-size: contain;
@@ -194,8 +194,8 @@
   height: 20px;
   width: 20px;
   background-color: #bebebe;
-  -webkit-mask-image: url("../../assets/arrow-end.svg");
-          mask-image: url("../../assets/arrow-end.svg");
+  -webkit-mask-image: url("../assets/arrow-end.svg");
+          mask-image: url("../assets/arrow-end.svg");
   background-size: cover;
   -webkit-mask-size: contain;
   mask-size: contain;
