@@ -1,12 +1,20 @@
-// import usersData from "../data/users.json" assert {type: 'json'};
+/**
+ * @file создание таблицы, привязка данных и настройки отображения
+ */
+
+import Table from "./components/Table.js";
+// import usersData from "../data/users.json" assert {type: 'json'}; //не работает для FireFox
 import usersData from "../data/users.js";
-import Table from "./Table.js";
+
+const visibleCols = ["firstName", "lastName", "about", "eyeColor"];
+
+const rowsPerPage = 10;
 
 const colsData = {
   firstName: "First name",
   lastName: "Last name",
   phone: "Phone",
-  about: 'About',
+  about: "About",
   eyeColor: "Eye color",
 };
 
@@ -19,10 +27,9 @@ const rowsData = usersData.map((user) => ({
   eyeColor: user.eyeColor,
 }));
 
-const visibleCols = ["firstName", "lastName", "about", "eyeColor"];
-
-const rowsPerPage = 5;
-
 const table = new Table(colsData, rowsData, rowsPerPage, visibleCols);
+
+const tableContainer = document.querySelector(".table__container");
+tableContainer.prepend(table.table);
 
 export default table;

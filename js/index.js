@@ -1,17 +1,19 @@
-import formController from './initForm.js';
+/**
+ * @file Связывание таблицы и формы, подключение постраничной навигации
+ */
+
+import formController from './initFormController.js';
 import table from './initTable.js';
-import './paginator.js';
+import './initPaginator.js';
 
-
-const tableContainer = document.querySelector(".table__container");
-tableContainer.prepend(table.table);
-
+//При выборе новой строки в таблице, отобразить данные в форме редактирования
 table.onChangeSelectedRow = () => {
   formController.visibleFields = table.visibleColumns;
   formController.data = table.getDataFromRow(table.selectedRow);
 };
 
-formController.onChangeForm = (_, formData) => {
+//При изменении данных в форме, изменить данные в таблице
+formController.onChangeForm = (_event, formData) => {
   const rowData = table.getDataFromRow(table.selectedRow);
   const newRowData = {...rowData, ...formData};
   table.changeRowData(newRowData)
