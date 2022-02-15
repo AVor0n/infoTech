@@ -52,6 +52,12 @@
   -webkit-line-clamp: 2;
 }
 
+.table__cell-eyeColor {
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px;
+}
+
 .table__row:hover {
   background-color: #d4d4d4;
   cursor: pointer;
@@ -248,8 +254,6 @@ body {
 
 .main {
   font-family: "Roboto", sans-serif;
-  font-size: 0.875rem;
-  line-height: 1.43;
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: 1fr 1fr;

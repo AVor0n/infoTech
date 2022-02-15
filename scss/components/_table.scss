@@ -44,6 +44,12 @@
     @include lines-limit(2); //ограничение количества отображаемых строк в поле about
   }
 
+  &__cell-eyeColor {
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+  }
+
   &__row:hover {
     background-color: $table-hover-color;
     cursor: pointer;

@@ -26,7 +26,6 @@ const TABLE_CELL_CONTENT_CLASS = "table__cell-content";
  * @class Таблица, с возможностью сортировки столбцов и постраничной навигацией
  */
 export default class Table {
-
   /**
    * Номер отображаемой страницы таблицы
    * @type {number}
@@ -546,7 +545,16 @@ export default class Table {
       const rowData = this.rowsData[i];
       this.tbody.append(this.#createRow(rowData));
     }
+
+    if (this.onUpdate && typeof this.onUpdate === "function") {
+      this.onUpdate();
+    }
   }
+
+  /**
+   * Функция-обработчик, после обновления таблицы
+   */
+  onUpdate() {}
 
   /**
    * Перестраивает тело таблицы. выполняется при редактировании данных таблицы.
