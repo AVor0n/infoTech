@@ -38,3 +38,19 @@
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 }
+
+// Определение контрастного цвета, через преобразование цвета в YIQ
+@mixin contrast($background) {
+  $r: red($background);
+  $g: green($background);
+  $b: blue($background);
+
+  $yiq: (($r*299)+($g*587)+($b*114))/1000;
+
+  @if ($yiq >= 128) {
+    color: #000000;
+  }
+  @else {
+    color: #FFFFFF;
+  }
+}
