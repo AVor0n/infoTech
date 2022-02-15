@@ -260,3 +260,13 @@ body {
       grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
+
+@media screen and (max-width: 600px) {
+  .main {
+    -ms-grid-columns: 1fr;
+        grid-template-columns: 1fr;
+  }
+  .table {
+    max-width: 100vw;
+  }
+}
