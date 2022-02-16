@@ -2,7 +2,7 @@
 
 ## [Текст задания](https://github.com/AVor0n/infoTech/blob/master/docs/task.md)
 
-## [Результат](https://avor0n.github.io/infoTech/)
+## [Результат](https://avor0n.github.io/infoTecs/)
 
 ## Заметки к выполнению
 
